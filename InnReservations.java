@@ -86,6 +86,7 @@ public class InnReservations {
         System.out.println(System.getenv("HP_JDBC_PW"));
     }
 
+
     /*
     FR1: Rooms and Rates. When this option is selected, the system shall output a list of rooms
     to the user sorted by popularity (highest to lowest, see below for definition of â€œpopularityâ€�)
@@ -169,6 +170,7 @@ public class InnReservations {
     from the user a reservation code, confirm the cancellation, then remove the reservation record
     from the database.
      */
+    //TODO: ALEX
     public static void FR4() {
 
     }
@@ -188,6 +190,7 @@ public class InnReservations {
     (as well as the full name of the room, and any extra information about the room you wish to
     add).
      */
+    //TODO: ALEX
     public static void FR5() {
 
     }
