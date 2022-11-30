@@ -138,6 +138,8 @@ public class InnReservations {
     contain the computed nightly rate (ie. total cost of stay divided by number of nights, rounded
     to the nearest penny)
      */
+    
+    //TODO: JOE
     public static void FR2() {
 
     }
@@ -156,6 +158,8 @@ public class InnReservations {
     and/or end dates, make sure to check whether the new begin and end dates conflict with another
     reservation in the system.
      */
+    
+    //TODO: ISHAN
     public static void FR3() {
 
     }
