@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-
 import java.util.Map;
 import java.util.Scanner;
 import java.util.LinkedHashMap;
@@ -97,6 +96,7 @@ public class InnReservations {
     Next available check-in date.
     Length in days and check out date of the most recent (completed) stay in the room.
      */
+    //TODO: HARIS KHAN
     public static void FR1() {
 
     }
