@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 // Classpaths
-
+// java -cp mysql-connector-java-8.0.16.jar:. InnReservations 
 
 public class InnReservations {
 
