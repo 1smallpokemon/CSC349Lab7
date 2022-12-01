@@ -24,7 +24,58 @@ public class InnReservations {
             System.out.println("Error: " + e.getMessage());
         }
 
+        Connection conn = reservations.establishConnection();
+        Scanner sc = new Scanner(System.in);
 
+        while(true) {
+            System.out.println("Please enter one of the following options");
+            System.out.println("0 -- Quit");
+            System.out.println("1 -- List Rooms");
+            System.out.println("2 -- Search Rooms");
+            System.out.println("3 -- Change Reservation");
+            System.out.println("4 -- Cancel Reservation");
+            System.out.println("5 -- View Reservation");
+            System.out.println("6 -- Revenue");
+            String userInput = sc.nextLine();
+            if(userInput.equals("0")) {
+                break;
+            }
+            else if(userInput.equals("1")) {
+                FR1(conn);
+            }
+            else if(userInput.equals("2")) {
+                FR2(conn);
+            }
+            else if(userInput.equals("3")) {
+                FR3(conn);
+            }
+            else if(userInput.equals("4")) {
+                FR4(conn);
+            }
+            else if(userInput.equals("5")) {
+                FR5(conn);
+            }
+            else if(userInput.equals("6")) {
+                FR6(conn);
+            }
+            else {
+                System.out.println("Invalid option -- Exiting");
+                break;
+            }
+        }
+
+
+    }
+
+    public Connection establishConnection() {
+        try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
+                System.getenv("HP_JDBC_USER"),
+                System.getenv("HP_JDBC_PW"))) {
+            return conn;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
     }
 
     // Demo2 - Establish JDBC connection, execute SELECT query, read & print result
@@ -97,7 +148,7 @@ public class InnReservations {
     Length in days and check out date of the most recent (completed) stay in the room.
      */
     //TODO: HARIS KHAN
-    public static void FR1() {
+    public static void FR1(Connection conn) {
 
     }
 
@@ -141,7 +192,7 @@ public class InnReservations {
      */
     
     //TODO: JOE
-    public static void FR2() {
+    public static void FR2(Connection conn) {
 
     }
 
@@ -161,7 +212,7 @@ public class InnReservations {
      */
     
     //TODO: ISHAN
-    public static void FR3() {
+    public static void FR3(Connection conn) {
 
     }
 
@@ -171,7 +222,7 @@ public class InnReservations {
     from the database.
      */
     //TODO: ALEX
-    public static void FR4() {
+    public static void FR4(Connection conn) {
 
     }
 
@@ -191,7 +242,7 @@ public class InnReservations {
     add).
      */
     //TODO: ALEX
-    public static void FR5() {
+    public static void FR5(Connection conn) {
 
     }
 
@@ -206,7 +257,7 @@ public class InnReservations {
     There shall also be a totals row in the table, which contains column totals. All amounts
     should be rounded to the nearest whole dollar.
      */
-    public static void FR6() {
+    public static void FR6(Connection conn) {
 
     }
 
