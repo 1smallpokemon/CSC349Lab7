@@ -24,10 +24,9 @@ public class InnReservations {
             System.out.println("Error: " + e.getMessage());
         }
 
-        Connection conn = reservations.establishConnection();
         Scanner sc = new Scanner(System.in);
 
-        while(true) {
+        while (true) {
             System.out.println("Please enter one of the following options");
             System.out.println("0 -- Quit");
             System.out.println("1 -- List Rooms");
@@ -37,28 +36,21 @@ public class InnReservations {
             System.out.println("5 -- View Reservation");
             System.out.println("6 -- Revenue");
             String userInput = sc.nextLine();
-            if(userInput.equals("0")) {
+            if (userInput.equals("0")) {
                 break;
-            }
-            else if(userInput.equals("1")) {
-                FR1(conn);
-            }
-            else if(userInput.equals("2")) {
-                FR2(conn);
-            }
-            else if(userInput.equals("3")) {
-                FR3(conn);
-            }
-            else if(userInput.equals("4")) {
-                FR4(conn);
-            }
-            else if(userInput.equals("5")) {
-                FR5(conn);
-            }
-            else if(userInput.equals("6")) {
-                FR6(conn);
-            }
-            else {
+            } else if (userInput.equals("1")) {
+                FR1();
+            } else if (userInput.equals("2")) {
+                FR2();
+            } else if (userInput.equals("3")) {
+                FR3();
+            } else if (userInput.equals("4")) {
+                FR4();
+            } else if (userInput.equals("5")) {
+                FR5();
+            } else if (userInput.equals("6")) {
+                FR6();
+            } else {
                 System.out.println("Invalid option -- Exiting");
                 break;
             }
@@ -67,15 +59,10 @@ public class InnReservations {
 
     }
 
-    public Connection establishConnection() {
-        try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
+    public static Connection establishConnection() throws SQLException {
+        return DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
                 System.getenv("HP_JDBC_USER"),
-                System.getenv("HP_JDBC_PW"))) {
-            return conn;
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        return null;
+                System.getenv("HP_JDBC_PW"));
     }
 
     // Demo2 - Establish JDBC connection, execute SELECT query, read & print result
@@ -148,7 +135,7 @@ public class InnReservations {
     Length in days and check out date of the most recent (completed) stay in the room.
      */
     //TODO: HARIS KHAN
-    public static void FR1(Connection conn) {
+    public static void FR1() {
 
     }
 
@@ -190,9 +177,9 @@ public class InnReservations {
     contain the computed nightly rate (ie. total cost of stay divided by number of nights, rounded
     to the nearest penny)
      */
-    
+
     //TODO: JOE
-    public static void FR2(Connection conn) {
+    public static void FR2() {
 
     }
 
@@ -210,9 +197,9 @@ public class InnReservations {
     and/or end dates, make sure to check whether the new begin and end dates conflict with another
     reservation in the system.
      */
-    
+
     //TODO: ISHAN
-    public static void FR3(Connection conn) {
+    public static void FR3() {
 
     }
 
@@ -222,8 +209,34 @@ public class InnReservations {
     from the database.
      */
     //TODO: ALEX
-    public static void FR4(Connection conn) {
+    public static void FR4() {
+        try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
+                System.getenv("HP_JDBC_USER"),
+                System.getenv("HP_JDBC_PW"))) {
+            Scanner scanner = new Scanner(System.in);
 
+            System.out.print("\nEnter a reservation code to cancel\n>>> ");
+            int reservationCode = scanner.nextInt();
+
+            scanner.nextLine();
+
+            System.out.print("Are you sure you want to cancel your reservation? (Y/N)\n>>> ");
+            String confirmCancel = scanner.nextLine();
+
+            if (confirmCancel.equalsIgnoreCase("y")) {
+                try (PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM lab7_reservations WHERE Code = ?")) {
+                    preparedStatement.setInt(1, reservationCode);
+                    preparedStatement.execute();
+                    System.out.println("Reservation " + reservationCode + " has been cancelled.");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    conn.rollback();
+                    System.out.println("Reservation "+ reservationCode + " does not exist.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -242,7 +255,7 @@ public class InnReservations {
     add).
      */
     //TODO: ALEX
-    public static void FR5(Connection conn) {
+    public static void FR5() {
 
     }
 
@@ -257,7 +270,7 @@ public class InnReservations {
     There shall also be a totals row in the table, which contains column totals. All amounts
     should be rounded to the nearest whole dollar.
      */
-    public static void FR6(Connection conn) {
+    public static void FR6() {
 
     }
 
