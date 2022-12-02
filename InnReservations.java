@@ -195,39 +195,68 @@ public class InnReservations {
      */
     //TODO: ALEX
     public static void FR5() {
-        String firstName;
-        String lastName;
-        String startDate;
-        String endDate;
-        String roomCode;
-        int reservationCode;
 
-        Scanner scanner = new Scanner(System.in);
+        try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
+                System.getenv("HP_JDBC_USER"),
+                System.getenv("HP_JDBC_PW"))) {
+            String firstName = "";
+            String lastName = "";
+            String startDate = "";
+            String endDate = "";
+            String roomCode = "";
+            int reservationCode = 0;
 
-        System.out.print("\nEnter your first name\n>>> ");
-        firstName = scanner.nextLine();
+            Scanner scanner = new Scanner(System.in);
 
-        System.out.print("\nEnter your last name\n>>> ");
-        lastName = scanner.nextLine();
+            System.out.print("\nEnter your first name\n>>> ");
+            firstName = scanner.nextLine();
 
-        System.out.print("\nEnter start date (YYYY-MM-DD)\n>>> ");
-        startDate = scanner.nextLine();
 
-        System.out.print("\nEnter end date (YYYY-MM-DD)\n>>> ");
-        endDate = scanner.nextLine();
+            System.out.print("\nEnter your last name\n>>> ");
+            lastName = scanner.nextLine();
 
-        System.out.print("\nEnter room code\n>>> ");
-        roomCode = scanner.nextLine();
+            System.out.print("\nEnter start date (YYYY-MM-DD)\n>>> ");
+            startDate = scanner.nextLine();
 
-        System.out.print("\nEnter reservation code\n>>> ");
-        reservationCode = scanner.nextInt();
+            System.out.print("\nEnter end date (YYYY-MM-DD)\n>>> ");
+            endDate = scanner.nextLine();
 
-        System.out.println("First name: " + firstName);
-        System.out.println("Last name: " + lastName);
-        System.out.println("Start date: " + startDate);
-        System.out.println("End date: " + endDate);
-        System.out.println("Room code: " + roomCode);
-        System.out.println("Reservation code: " + reservationCode);
+            System.out.print("\nEnter room code\n>>> ");
+            roomCode = scanner.nextLine();
+
+            System.out.print("\nEnter reservation code\n>>> ");
+            reservationCode = scanner.nextInt();
+
+            /*
+            System.out.println("First name: " + firstName);
+            System.out.println("Last name: " + lastName);
+            System.out.println("Start date: " + startDate);
+            System.out.println("End date: " + endDate);
+            System.out.println("Room code: " + roomCode);
+            System.out.println("Reservation code: " + reservationCode);
+             */
+
+            // TODO: format strings so that firstName = "%{firstName%"
+            // want that formatted string to be passed into ? ready to go
+            try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM lab7_reservations WHERE FirstName like ? and LastName like ? and CheckIn >= ?  and Checkout <= ? and Room like ? and CODE like ?")) {
+                preparedStatement.setString(1, firstName);
+                preparedStatement.setString(2, lastName);
+                preparedStatement.setString(3, startDate);
+                preparedStatement.setString(4, endDate);
+                preparedStatement.setString(5, roomCode);
+                preparedStatement.setInt(6, reservationCode);
+                ResultSet rs = preparedStatement.executeQuery();
+                while(rs.next()) {
+                    System.out.println(rs.getString("ROOM"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                conn.rollback();
+                System.out.println("Reservation " + reservationCode + " does not exist.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
