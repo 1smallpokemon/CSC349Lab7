@@ -126,9 +126,13 @@ public class InnReservations {
         while (!empty){
             System.out.println("Please enter the reservation code of the reservation you would like to change");
             System.out.print(">>> ");
-            int reservationCode = sc.nextInt();
+            String reservationCode = sc.nextLine();
             // ensure reservation code exists
-            String reservation=getReservationCode(reservationCode);
+            Boolean reservationPresent=getReservationCode(reservationCode);
+            if (!reservationPresent){
+                System.out.println("Reservation Code "+reservationCode+" not present in records!");
+                continue;
+            }
             // if it does, then display menu
             System.out.println("Please enter the field you would like to change");
             System.out.println("1 -- First Name");
@@ -146,8 +150,45 @@ public class InnReservations {
      * Retrieve reservation information for a specified reservation code
      * Meant for validation of existance of reservation code for FR3
      */
-    private String getReservationCode(int reservationCode) {
-        return "";
+    private Boolean getReservationCode(String reservationCode) {
+        try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
+							   System.getenv("HP_JDBC_USER"),
+							   System.getenv("HP_JDBC_PW"))) {
+            try (PreparedStatement preparedStatement = conn.prepareStatement(
+                    "SELECT * FROM lab7_reservations WHERE CODE = ?")) {
+                preparedStatement.setString(1, reservationCode.toString());
+                ResultSet rs = preparedStatement.executeQuery();
+                if (!rs.isBeforeFirst()){
+                    return false;
+                }
+                else{
+                    while (rs.next()) {
+                        System.out.println("-----");
+                        System.out.println("Reservation:");
+                        System.out.println("Code: " + rs.getString("CODE"));
+                        System.out.println("Room: " + rs.getString("Room"));
+                        System.out.println("Check In: " + rs.getString("CheckIn"));
+                        System.out.println("Check Out: " + rs.getString("Checkout"));
+                        System.out.println("Rate: " + rs.getString("Rate"));
+                        System.out.println("Last Name: " + rs.getString("LastName"));
+                        System.out.println("First Name: " + rs.getString("FirstName"));
+                        System.out.println("Adults: " + rs.getString("Adults"));
+                        System.out.println("Kids: " + rs.getString("Kids"));
+                        System.out.println("-----");
+                    }
+                    return true;
+                }
+                
+            } catch (SQLException e) {
+                e.printStackTrace();
+                conn.rollback();
+                System.out.println("Reservation " + reservationCode + " does not exist.");
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /*
