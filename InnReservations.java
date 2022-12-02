@@ -347,7 +347,17 @@ public class InnReservations {
     should be rounded to the nearest whole dollar.
      */
     public static void FR6() {
-
+        // TODO Ishan
+        /*
+            SELECT Room,
+            MONTH(lab7_reservations.Checkout) AS Month,
+            SUM(DateDiff(Checkout,Checkin)*Rate)
+            FROM lab7_reservations
+            JOIN lab7_rooms ON lab7_rooms.RoomCode=lab7_reservations.Room
+            WHERE YEAR(lab7_reservations.Checkout)=YEAR(CURDATE())
+            GROUP BY Room,MONTH(lab7_reservations.Checkout)
+            ORDER BY Room,Month
+        */
     }
 
     // Demo2 - Establish JDBC connection, execute SELECT query, read & print result
