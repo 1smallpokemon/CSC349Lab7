@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.Scanner;
+import java.util.HashMap;
 
 // Classpaths
 // java -cp mysql-connector-java-8.0.16.jar:. InnReservations 
@@ -124,25 +125,45 @@ public class InnReservations {
         Scanner sc = new Scanner(System.in);
         
         while (!empty){
+            // Request User for Reservation Code
             System.out.println("Please enter the reservation code of the reservation you would like to change");
             System.out.print(">>> ");
             String reservationCode = sc.nextLine();
-            // ensure reservation code exists
-            Boolean reservationPresent=getReservationCode(reservationCode);
-            if (!reservationPresent){
+
+            // Retrieve reservation code information and validate it exists
+            HashMap<String,String> reservationPresent=getReservationCode(reservationCode);
+            if (reservationPresent==null){
                 System.out.println("Reservation Code "+reservationCode+" not present in records!");
                 continue;
             }
-            // if it does, then display menu
-            System.out.println("Please enter the field you would like to change");
-            System.out.println("1 -- First Name");
-            System.out.println("2 -- Last Name");
-            System.out.println("3 -- Begin Date");
-            System.out.println("4 -- End Date");
-            System.out.println("5 -- Number of Children");
-            System.out.println("6 -- Number of Adults");
-            System.out.print(">>> ");
-            option = sc.nextLine();
+    
+            /**
+             * Allow the user to make changes to an existing reservation.
+             * Update the reservation based on any new information provided.
+             */
+            // create deep copy of reservationPresent
+            HashMap<String, String> reservationNew = new HashMap<String, String>();
+            for (String key : reservationPresent.keySet()) {
+                reservationNew.put(key, reservationPresent.get(key));
+            }
+
+            String [] fields={
+                "FirstName",
+                "LastName",
+                "CheckIn",
+                "Checkout",
+                "Adults",
+                "Kids"
+            };
+            for (int i=0;i<fields.length;i++){
+                System.out.println("Specify a new value for "+fields[i]+" or press enter to keep the current value ("+reservationPresent.get(fields[i])+")");
+                System.out.print(">>> ");
+                String newField=sc.nextLine();
+                if (!newField.equals("")){
+                    reservationNew.put(fields[i],newField);
+                }
+                
+            }
         }
         
     }
@@ -150,7 +171,7 @@ public class InnReservations {
      * Retrieve reservation information for a specified reservation code
      * Meant for validation of existance of reservation code for FR3
      */
-    private Boolean getReservationCode(String reservationCode) {
+    private HashMap<String, String> getReservationCode(String reservationCode) {
         try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
 							   System.getenv("HP_JDBC_USER"),
 							   System.getenv("HP_JDBC_PW"))) {
@@ -159,24 +180,24 @@ public class InnReservations {
                 preparedStatement.setString(1, reservationCode.toString());
                 ResultSet rs = preparedStatement.executeQuery();
                 if (!rs.isBeforeFirst()){
-                    return false;
+                    return null;
                 }
                 else{
                     while (rs.next()) {
-                        System.out.println("-----");
-                        System.out.println("Reservation:");
-                        System.out.println("Code: " + rs.getString("CODE"));
-                        System.out.println("Room: " + rs.getString("Room"));
-                        System.out.println("Check In: " + rs.getString("CheckIn"));
-                        System.out.println("Check Out: " + rs.getString("Checkout"));
-                        System.out.println("Rate: " + rs.getString("Rate"));
-                        System.out.println("Last Name: " + rs.getString("LastName"));
-                        System.out.println("First Name: " + rs.getString("FirstName"));
-                        System.out.println("Adults: " + rs.getString("Adults"));
-                        System.out.println("Kids: " + rs.getString("Kids"));
-                        System.out.println("-----");
+                        // store reservation information in hashmap
+                        HashMap <String,String> reservation = new HashMap<String,String>();
+                        reservation.put("CODE", rs.getString("CODE"));
+                        reservation.put("Room", rs.getString("Room"));
+                        reservation.put("CheckIn", rs.getString("CheckIn"));
+                        reservation.put("Checkout", rs.getString("Checkout"));
+                        reservation.put("Rate", rs.getString("Rate"));
+                        reservation.put("LastName", rs.getString("LastName"));
+                        reservation.put("FirstName", rs.getString("FirstName"));
+                        reservation.put("Adults", rs.getString("Adults"));
+                        reservation.put("Kids", rs.getString("Kids"));
+                        return reservation;
                     }
-                    return true;
+                    return null;
                 }
                 
             } catch (SQLException e) {
@@ -188,7 +209,7 @@ public class InnReservations {
         catch (SQLException e){
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     /*
