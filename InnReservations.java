@@ -358,6 +358,7 @@ public class InnReservations {
             GROUP BY Room,MONTH(lab7_reservations.Checkout)
             ORDER BY Room,Month
         */
+        // parse the result set into a hashmap with values of an arraylist
     }
 
     // Demo2 - Establish JDBC connection, execute SELECT query, read & print result
