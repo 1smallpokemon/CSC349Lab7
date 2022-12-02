@@ -45,7 +45,7 @@ public class InnReservations {
                     break;
                 case "3":
                     empty = false;
-                    FR3();
+                    reservations.FR3();
                     break;
                 case "4":
                     empty = false;
@@ -147,7 +147,7 @@ public class InnReservations {
      * Meant for validation of existance of reservation code for FR3
      */
     private String getReservationCode(int reservationCode) {
-        try 
+        return "";
     }
 
     /*
