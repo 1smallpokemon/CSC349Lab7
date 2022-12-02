@@ -99,8 +99,55 @@ public class InnReservations {
     }
 
     //TODO: ISHAN
-    public static void FR3() {
-
+    /**
+     * Allow the user to make changes to an existing reservation.
+     * Accept from the user a reservation code and new values for any of the
+     * following:
+     * • First name
+     * • Last name
+     * • Begin date
+     * • End date
+     * • Number of children
+     * • Number of adults
+     * Allow the user to provide a new value or to indicate “no change” for a given
+     * field. Update
+     * the reservation based on any new information provided. If the user requests
+     * different begin
+     * and/or end dates, make sure to check whether the new begin and end dates
+     * conflict with another
+     * reservation in the system.
+     */
+    public void FR3() {
+        // Create menu for user to select which field to change
+        String option;
+        boolean empty = false;
+        Scanner sc = new Scanner(System.in);
+        
+        while (!empty){
+            System.out.println("Please enter the reservation code of the reservation you would like to change");
+            System.out.print(">>> ");
+            int reservationCode = sc.nextInt();
+            // ensure reservation code exists
+            String reservation=getReservationCode(reservationCode);
+            // if it does, then display menu
+            System.out.println("Please enter the field you would like to change");
+            System.out.println("1 -- First Name");
+            System.out.println("2 -- Last Name");
+            System.out.println("3 -- Begin Date");
+            System.out.println("4 -- End Date");
+            System.out.println("5 -- Number of Children");
+            System.out.println("6 -- Number of Adults");
+            System.out.print(">>> ");
+            option = sc.nextLine();
+        }
+        
+    }
+    /**
+     * Retrieve reservation information for a specified reservation code
+     * Meant for validation of existance of reservation code for FR3
+     */
+    private String getReservationCode(int reservationCode) {
+        try 
     }
 
     /*
