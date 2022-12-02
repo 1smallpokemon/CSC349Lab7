@@ -199,6 +199,14 @@ public class InnReservations {
         try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
                 System.getenv("HP_JDBC_USER"),
                 System.getenv("HP_JDBC_PW"))) {
+            StringBuilder firstNameFormatted = new StringBuilder();
+            StringBuilder lastNameFormatted = new StringBuilder();
+            StringBuilder roomCodeFormatted = new StringBuilder();
+            StringBuilder reservationCodeFormatted = new StringBuilder();
+            firstNameFormatted.append("%");
+            lastNameFormatted.append("%");
+            roomCodeFormatted.append("%");
+            reservationCodeFormatted.append("%");
             String firstName = "";
             String lastName = "";
             String startDate = "";
@@ -210,10 +218,13 @@ public class InnReservations {
 
             System.out.print("\nEnter your first name\n>>> ");
             firstName = scanner.nextLine();
-
+            firstNameFormatted.append(firstName);
+            firstNameFormatted.append("%");
 
             System.out.print("\nEnter your last name\n>>> ");
             lastName = scanner.nextLine();
+            lastNameFormatted.append(lastName);
+            lastNameFormatted.append("%");
 
             System.out.print("\nEnter start date (YYYY-MM-DD)\n>>> ");
             startDate = scanner.nextLine();
@@ -223,9 +234,14 @@ public class InnReservations {
 
             System.out.print("\nEnter room code\n>>> ");
             roomCode = scanner.nextLine();
+            roomCodeFormatted.append(roomCode);
+            roomCodeFormatted.append("%");
+
 
             System.out.print("\nEnter reservation code\n>>> ");
             reservationCode = scanner.nextInt();
+            reservationCodeFormatted.append(reservationCode);
+            reservationCodeFormatted.append("%");
 
             /*
             System.out.println("First name: " + firstName);
@@ -236,15 +252,15 @@ public class InnReservations {
             System.out.println("Reservation code: " + reservationCode);
              */
 
-            // TODO: format strings so that firstName = "%{firstName%"
+            // TODO: format strings so that firstName = "%{firstName}%"
             // want that formatted string to be passed into ? ready to go
             try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM lab7_reservations WHERE FirstName like ? and LastName like ? and CheckIn >= ?  and Checkout <= ? and Room like ? and CODE like ?")) {
-                preparedStatement.setString(1, firstName);
-                preparedStatement.setString(2, lastName);
+                preparedStatement.setString(1, firstNameFormatted.toString());
+                preparedStatement.setString(2, lastNameFormatted.toString());
                 preparedStatement.setString(3, startDate);
                 preparedStatement.setString(4, endDate);
-                preparedStatement.setString(5, roomCode);
-                preparedStatement.setInt(6, reservationCode);
+                preparedStatement.setString(5, roomCodeFormatted.toString());
+                preparedStatement.setString(6, reservationCodeFormatted.toString());
                 ResultSet rs = preparedStatement.executeQuery();
                 while(rs.next()) {
                     System.out.println(rs.getString("ROOM"));
