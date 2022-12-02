@@ -15,39 +15,53 @@ public class InnReservations {
         }
 
         Scanner sc = new Scanner(System.in);
+        boolean empty = false;
 
         menu:
         while (true) {
-            System.out.println("Please enter one of the following options");
-            System.out.println("0 -- Quit");
-            System.out.println("1 -- List Rooms");
-            System.out.println("2 -- Search Rooms");
-            System.out.println("3 -- Change Reservation");
-            System.out.println("4 -- Cancel Reservation");
-            System.out.println("5 -- View Reservation");
-            System.out.println("6 -- Revenue");
-            System.out.print(">>> ");
+            if (!empty) {
+                System.out.println("Please enter one of the following options");
+                System.out.println("0 -- Quit");
+                System.out.println("1 -- List Rooms");
+                System.out.println("2 -- Search Rooms");
+                System.out.println("3 -- Change Reservation");
+                System.out.println("4 -- Cancel Reservation");
+                System.out.println("5 -- View Reservation");
+                System.out.println("6 -- Revenue");
+                System.out.print(">>> ");
+            }
             String userInput = sc.nextLine();
             switch (userInput) {
                 case "0":
+                    empty = false;
                     break menu;
                 case "1":
+                    empty = false;
                     FR1();
                     break;
                 case "2":
+                    empty = false;
                     FR2();
                     break;
                 case "3":
+                    empty = false;
                     FR3();
                     break;
                 case "4":
+                    empty = false;
                     FR4();
                     break;
                 case "5":
+                    empty = false;
                     FR5();
                     break;
                 case "6":
+                    empty = false;
                     FR6();
+                    break;
+                case "":
+                    empty = true;
+                    System.out.print(">>> ");
                     break;
                 default:
                     System.out.println("Invalid option -- Exiting");
@@ -133,7 +147,7 @@ public class InnReservations {
     from the user a reservation code, confirm the cancellation, then remove the reservation record
     from the database.
      */
-    //TODO: ALEX
+    //TODO: ALEX - complete
     public static void FR4() {
         try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
                 System.getenv("HP_JDBC_USER"),
@@ -193,7 +207,7 @@ public class InnReservations {
     (as well as the full name of the room, and any extra information about the room you wish to
     add).
      */
-    //TODO: ALEX
+    //TODO: ALEX - complete
     public static void FR5() {
 
         try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
@@ -212,7 +226,7 @@ public class InnReservations {
             String startDate = "";
             String endDate = "";
             String roomCode = "";
-            int reservationCode = 0;
+            String reservationCode = "";
 
             Scanner scanner = new Scanner(System.in);
 
@@ -237,23 +251,11 @@ public class InnReservations {
             roomCodeFormatted.append(roomCode);
             roomCodeFormatted.append("%");
 
-
             System.out.print("\nEnter reservation code\n>>> ");
-            reservationCode = scanner.nextInt();
+            reservationCode = scanner.nextLine();
             reservationCodeFormatted.append(reservationCode);
             reservationCodeFormatted.append("%");
 
-            /*
-            System.out.println("First name: " + firstName);
-            System.out.println("Last name: " + lastName);
-            System.out.println("Start date: " + startDate);
-            System.out.println("End date: " + endDate);
-            System.out.println("Room code: " + roomCode);
-            System.out.println("Reservation code: " + reservationCode);
-             */
-
-            // TODO: format strings so that firstName = "%{firstName}%"
-            // want that formatted string to be passed into ? ready to go
             try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM lab7_reservations WHERE FirstName like ? and LastName like ? and CheckIn >= ?  and Checkout <= ? and Room like ? and CODE like ?")) {
                 preparedStatement.setString(1, firstNameFormatted.toString());
                 preparedStatement.setString(2, lastNameFormatted.toString());
@@ -262,8 +264,19 @@ public class InnReservations {
                 preparedStatement.setString(5, roomCodeFormatted.toString());
                 preparedStatement.setString(6, reservationCodeFormatted.toString());
                 ResultSet rs = preparedStatement.executeQuery();
-                while(rs.next()) {
-                    System.out.println(rs.getString("ROOM"));
+                while (rs.next()) {
+                    System.out.println("-----");
+                    System.out.println("Reservation:");
+                    System.out.println("Code: " + rs.getString("CODE"));
+                    System.out.println("Room: " + rs.getString("Room"));
+                    System.out.println("Check In: " + rs.getString("CheckIn"));
+                    System.out.println("Check Out: " + rs.getString("Checkout"));
+                    System.out.println("Rate: " + rs.getString("Rate"));
+                    System.out.println("Last Name: " + rs.getString("LastName"));
+                    System.out.println("First Name: " + rs.getString("FirstName"));
+                    System.out.println("Adults: " + rs.getString("Adults"));
+                    System.out.println("Kids: " + rs.getString("Kids"));
+                    System.out.println("-----");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
