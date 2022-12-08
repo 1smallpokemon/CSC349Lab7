@@ -164,6 +164,44 @@ public class InnReservations {
                 }
                 
             }
+
+            // Check if new reservation conflicts with existing reservations (Trigger)
+            // create trigger conflicting_record_presence AFTER UPDATE ON lab7_reservations
+            //     for each row
+            //     BEGIN
+            //         DECLARE code_failure varchar(100);
+            //         SELECT Code into code_failure FROM lab7_reservations WHERE (
+            //         (New.Checkin<=Checkin AND New.Checkout>Checkin)
+            //         OR (New.Checkin>=Checkin AND New.Checkout<Checkout)
+            //         OR (New.Checkin<=Checkout AND New.Checkout>=Checkout)
+            //         ) AND New.Room=Room AND New.Code!=Code
+            //         ;
+            //         if (code_failure is not null) then
+            //             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Updated stay interval conflicts with another entry(s)';
+            //         END IF;
+            //         if (New.Checkin<=New.Checkout) then
+            //             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Check-In Date must be before Checkout Date';
+            //         end if;
+            //     END;
+            // Update reservation in database
+            try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
+                    System.getenv("HP_JDBC_USER"),
+                    System.getenv("HP_JDBC_PW"))) {
+                try (PreparedStatement preparedStatement = conn.prepareStatement(
+                        "UPDATE lab7_reservations SET FirstName=?, LastName=?, CheckIn=?, Checkout=?, Adults=?, KIDS=? WHERE CODE=?")) {
+                    preparedStatement.setString(1, reservationNew.get("FirstName"));
+                    preparedStatement.setString(2, reservationNew.get("LastName"));
+                    preparedStatement.setString(3, reservationNew.get("CheckIn"));
+                    preparedStatement.setString(4, reservationNew.get("Checkout"));
+                    preparedStatement.setString(5, reservationNew.get("Adults"));
+                    preparedStatement.setString(6, reservationNew.get("Kids"));
+                    preparedStatement.setString(7, reservationCode);
+                    preparedStatement.executeUpdate();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+            
         }
         
     }
