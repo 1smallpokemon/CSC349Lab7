@@ -126,9 +126,12 @@ public class InnReservations {
         
         while (!empty){
             // Request User for Reservation Code
-            System.out.println("Please enter the reservation code of the reservation you would like to change");
+            System.out.println("Please enter the reservation code of the reservation you would like to change, OR Q to return to main menu");
             System.out.print(">>> ");
             String reservationCode = sc.nextLine();
+            if (reservationCode.equals("Q")){
+                break;
+            }
 
             // Retrieve reservation code information and validate it exists
             HashMap<String,String> reservationPresent=getReservationCode(reservationCode);
