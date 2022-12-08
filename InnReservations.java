@@ -1,7 +1,8 @@
 import java.sql.*;
 import java.util.Scanner;
 import java.util.HashMap;
-
+import java.util.ArrayList;
+import java.util.Collections;
 // Classpaths
 // java -cp mysql-connector-java-8.0.16.jar:. InnReservations 
 
@@ -461,7 +462,55 @@ public class InnReservations {
             GROUP BY Room,MONTH(lab7_reservations.Checkout)
             ORDER BY Room,Month
         */
-        // parse the result set into a hashmap with values of an arraylist
+        // Perform SQL query for monthly revenue for each room
+        try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
+                System.getenv("HP_JDBC_USER"),
+                System.getenv("HP_JDBC_PW"))) {
+            try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT Room, MONTH(lab7_reservations.Checkout) AS Month,ROUND(SUM(DateDiff(Checkout,Checkin)*Rate),2) AS MonthlyRevenue FROM lab7_reservations JOIN lab7_rooms ON lab7_rooms.RoomCode=lab7_reservations.Room WHERE YEAR(lab7_reservations.Checkout)=YEAR(CURDATE()) GROUP BY Room,MONTH(lab7_reservations.Checkout) ORDER BY Room,Month")) {
+                ResultSet rs = preparedStatement.executeQuery();
+                HashMap<String, ArrayList<Double>> monthlyRevenues = new HashMap<String, ArrayList<Double>>();
+
+                while (rs.next()) {
+                    String room = rs.getString("Room");
+                    int month = rs.getInt("Month");
+                    double revenue = rs.getDouble("MonthlyRevenue");
+                    // Create new arraylist if room is not in hashmap
+                    if (!monthlyRevenues.containsKey(room)) {
+                        monthlyRevenues.put(room, new ArrayList<Double>(Collections.nCopies(13, 0.0)));
+                        
+                    }
+                    monthlyRevenues.get(room).set(month - 1, revenue);
+                    // Add Yearly revenue to last index
+                    double yearlyRevenue = revenue+monthlyRevenues.get(room).get(12);
+                    monthlyRevenues.get(room).set(12, yearlyRevenue);
+                    
+                       
+    
+                }
+                // Print monthly revenue for each room
+                System.out.println("Room\tJan\tFeb\tMar\tApr\tMay\tJun\tJul\tAug\tSep\tOct\tNov\tDec\tTotal");
+                for (String room : monthlyRevenues.keySet()) {
+                    System.out.print(room + "\t");
+                
+                    for (int i = 0; i < 12; i++) {
+                        if (monthlyRevenues.get(room).size() > i) {
+                            double profit=Math.round(monthlyRevenues.get(room).get(i)*100.0)/100.0;
+                            System.out.print(profit + "\t");
+                        } else {
+                            System.out.print("0\t");
+                        }
+                    }
+                    double yearlyRevenue=Math.round(monthlyRevenues.get(room).get(12)*100.0)/100.0;
+                    System.out.println(yearlyRevenue);
+                }
+                // Print monthly revenue for each room
+            } catch (SQLException e) {
+                e.printStackTrace();
+                conn.rollback();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // Demo2 - Establish JDBC connection, execute SELECT query, read & print result
