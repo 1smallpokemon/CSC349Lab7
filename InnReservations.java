@@ -494,14 +494,14 @@ public class InnReservations {
                 
                     for (int i = 0; i < 12; i++) {
                         if (monthlyRevenues.get(room).size() > i) {
-                            double profit=Math.round(monthlyRevenues.get(room).get(i)*100.0)/100.0;
-                            System.out.print(profit + "\t");
+                            int profit=monthlyRevenues.get(room).get(i).intValue();
+                            System.out.print("$"+profit + "\t");
                         } else {
                             System.out.print("0\t");
                         }
                     }
-                    double yearlyRevenue=Math.round(monthlyRevenues.get(room).get(12)*100.0)/100.0;
-                    System.out.println(yearlyRevenue);
+                    int yearlyRevenue=monthlyRevenues.get(room).get(12).intValue();
+                    System.out.println("$"+yearlyRevenue);
                 }
                 // Print monthly revenue for each room
             } catch (SQLException e) {
