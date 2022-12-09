@@ -27,6 +27,6 @@
 ##### 5) Run InnReservations
 ``` java -cp \path_of_mysql_connector:. InnReservations```
 
-Example where mysql_connnector in same directory as InnReservations.java:
+Example where mysql_connnector in same directory level as InnReservations.java:
 
 ```java -cp mysql-connector-java-8.0.16.jar:. InnReservations```
