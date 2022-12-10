@@ -295,10 +295,7 @@ public class InnReservations {
 					int numDays = numWeekendsRS.getInt("dys");
 					System.out.println(numWeekends + " " + numDays);
 				}
-				// int numWeekends = numWeekendsRS.getInt("wknds");
-				// int numDays = numWeekendsRS.getInt("dys");
-				
-				// System.out.println(numWeekends + " " + numDays);
+
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
