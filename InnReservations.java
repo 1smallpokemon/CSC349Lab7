@@ -126,6 +126,7 @@ public class InnReservations {
 		HashMap<String, String> userInput = new HashMap<String, String>();
 		Scanner sc = new Scanner(System.in);
 		String[] fields = { "FirstName", "LastName", "RoomCode", "bedType", "CheckIn", "Checkout", "Kids", "Adults" };
+		boolean similarDateFlag = false;
 		// Take in user input for each field
 		for (int i = 0; i < fields.length; i++) {
 			System.out.println("Specify a value for " + fields[i]);
@@ -225,10 +226,11 @@ public class InnReservations {
 				if (reservations.size() == 0) {
 					System.out.print("No exact matches found...");
 					querySimilarDateRange(userInput, reservations);
-					
+					similarDateFlag = true;
+
 					System.out.println("No exact matches found...");
 					System.out.println("Similar matches below:");
-					for(int i=0; i< 5; i++) {
+					for (int i = 0; i < 5; i++) {
 						System.out.print("Option " + i + ": | ");
 						System.out.print("Room Code: " + reservations.get(i).get("RoomCode") + " | ");
 						System.out.print("Room Name: " + reservations.get(i).get("RoomName") + " | ");
@@ -241,9 +243,58 @@ public class InnReservations {
 								+ " to " + reservations.get(i).get("CheckOut"));
 					}
 				}
-				
-				
+				System.out.println("Please choose one of the following options (Q - exit to menu): ");
+				System.out.print(">>>");
+				String input = sc.nextLine();
 
+				if (input.toLowerCase().equals("q")) {
+					conn.rollback();
+					return;
+				}
+
+				int option = Integer.parseInt(input) - 1;
+
+				System.out.println("Confirm the following: ");
+				System.out.println(
+						"First name, last name: " + userInput.get("FirstName") + " " + userInput.get("LastName"));
+				System.out.println("Room code, room name, bed type: " + reservations.get(option).get("RoomCode") + ", "
+						+ reservations.get(option).get("RoomName") + ", " + reservations.get(option).get("bedType"));
+				if (similarDateFlag) {
+					System.out.println("Adjusted CheckIn/ CheckOut dates: " + reservations.get(option).get("CheckIn")
+							+ " to " + reservations.get(option).get("CheckOut"));
+				} else {
+					System.out.println("Check In and Check Out dates: " + userInput.get("CheckIn") + " to "
+							+ userInput.get("Checkout"));
+				}
+
+				System.out.println("Number of adults: " + userInput.get("Adults"));
+				System.out.println("Number of kids: " + userInput.get("Kids"));
+				
+				//find rate
+				PreparedStatement numWeekendsStatement = conn.prepareStatement("SELECT ( Floor(DATEDIFF(? , ? )/7) * 2)+(CASE WHEN DAYOFWEEK( ? ) = '1' THEN 1 ELSE 0 END)+(CASE WHEN DAYOFWEEK( ? )   = '7' THEN 1 ELSE 0 END) as wknds, DATEDIFF(?,?) as dys");
+				if(similarDateFlag) {
+					numWeekendsStatement.setString(1, reservations.get(option).get("CheckOut"));
+					numWeekendsStatement.setString(2, reservations.get(option).get("CheckIn"));
+					numWeekendsStatement.setString(3, reservations.get(option).get("CheckIn"));
+					numWeekendsStatement.setString(4, reservations.get(option).get("CheckOut"));
+					numWeekendsStatement.setString(5, reservations.get(option).get("CheckOut"));
+					numWeekendsStatement.setString(6, reservations.get(option).get("CheckIn"));
+				}else {
+					numWeekendsStatement.setString(1, userInput.get("Checkout"));
+					numWeekendsStatement.setString(2, userInput.get("CheckIn"));
+					numWeekendsStatement.setString(3, userInput.get("CheckIn"));
+					numWeekendsStatement.setString(4, userInput.get("Checkout"));
+					numWeekendsStatement.setString(5, userInput.get("Checkout"));
+					numWeekendsStatement.setString(6, userInput.get("CheckIn"));
+				}
+				
+				ResultSet numWeekendsRS = numWeekendsStatement.executeQuery();
+				rs.next();
+				int numWeekends = numWeekendsRS.getInt("wknds");
+				int numDays = numWeekendsRS.getInt("dys");
+				
+				System.out.println(numWeekends + " " + numDays);
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 				conn.rollback();
@@ -253,6 +304,7 @@ public class InnReservations {
 		}
 
 	}
+
 
 	private static int maxOccOfInn() {
 		try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"), System.getenv("HP_JDBC_USER"),
