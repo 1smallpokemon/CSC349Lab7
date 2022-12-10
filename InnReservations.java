@@ -89,49 +89,38 @@ public class InnReservations {
 	 * (completed) stay in the room.
 	 */
 	// TODO: HARIS KHAN
-	public static void FR1() {}
+	public static void FR1() {
+		String query="WITH totalCheckInDays as (SELECT RoomName,SUM(CASE WHEN DATEDIFF(Checkout, CURDATE()-INTERVAL 180 day) < DATEDIFF(Checkout,Checkin) THEN DATEDIFF(Checkout, CURDATE()-INTERVAL 180 day) WHEN DATEDIFF(CheckOut,Checkin) > 180 then '180' ELSE DATEDIFF(CheckOut,Checkin) END) AS Total FROM lab7_rooms JOIN lab7_reservations ON lab7_reservations.Room = lab7_rooms.RoomCode GROUP BY RoomName),nextAvailableCheck AS (SELECT MAX(CheckOut) as lastCheckOut, RoomName FROM lab7_rooms JOIN lab7_reservations ON lab7_reservations.Room = lab7_rooms.RoomCode group by RoomName),mostRecentLength AS (SELECT RoomName, DATEDIFF(checkout, checkin) as totalStay FROM nextAvailableCheck, lab7_reservations WHERE lab7_reservations.Checkout = lastCheckOut) SELECT DISTINCT totalCheckInDays.RoomName AS RoomName, Round(Total/180, 2) as Popularity_Score, lastCheckOut as Next_Available_Date, totalStay as Most_Recent_Completed_Stay FROM totalCheckInDays,nextAvailableCheck, mostRecentLength WHERE totalCheckInDays.RoomName = nextAvailableCheck.RoomName AND nextAvailableCheck.RoomName = mostRecentLength.RoomName";
+		try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"), System.getenv("HP_JDBC_USER"),
+				System.getenv("HP_JDBC_PW"))) {
+			try (PreparedStatement preparedStatement = conn
+					.prepareStatement(query)) {
+				ResultSet rs = preparedStatement.executeQuery();
+				String [] fields={
+						"RoomName",
+						"Popularity_Score",
+						"Next_Available_Date",
+						"Most_Recent_Completed_Stay"
+				};
+				while (rs.next()) {
+					for(int i=0;i<fields.length;i++){
+						System.out.println(fields[i]+": "+rs.getString(fields[i]));
+					}
+					System.out.println("=================================");
+				}
 
-	// 	// Step 1: Establish  connection to RDBMS
-	// 	try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"), System.getenv("HP_JDBC_USER"),
-	// 			System.getenv("HP_JDBC_PW"))) {
-	// 		// Step 2: Construct SQL statement
-	// 		String sql = "WITH totalCheckInDays as (SELECT RoomName, SUM(CASE WHEN DATEDIFF(CURDATE(), Checkout) > 180 THEN '0' WHEN DATEDIFF(Checkout, CURDATE()-INTERVAL 180 day) < DATEDIFF(Checkout,Checkin) THEN DATEDIFF(Checkout, CURDATE()-INTERVAL 180 day) WHEN DATEDIFF(CheckOut,Checkin) > 180 then '180' ELSE DATEDIFF(CheckOut,Checkin) END) AS Total FROM imeher.lab7_rooms JOIN imeher.lab7_reservations ON imeher.lab7_reservations.Room = imeher.lab7_rooms.RoomCode GROUP BY RoomName), nextAvailableCheck AS (SELECT MAX(CheckOut) as lastCheckOut, RoomName FROM imeher.lab7_rooms JOIN imeher.lab7_reservations ON imeher.lab7_reservations.Room = imeher.lab7_rooms.RoomCode group by RoomName), mostRecentLength AS (SELECT RoomName, DATEDIFF(checkout, checkin) as totalStay FROM nextAvailableCheck, imeher.lab7_reservations WHERE imeher.lab7_reservations.Checkout = lastCheckOut) SELECT DISTINCT totalCheckInDays.RoomName AS RoomName, Round(Total/180, 2) as Popularity_Score, lastCheckOut as Next_Available_Date, totalStay as Most_Recent_Completed_Stay FROM totalCheckInDays, nextAvailableCheck,  mostRecentLength WHERE totalCheckInDays.RoomName = nextAvailableCheck.RoomName AND nextAvailableCheck.RoomName = mostRecentLength.RoomName";
+			} catch (SQLException e) {
+				e.printStackTrace();
+				conn.rollback();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-	// 		// Step 4: Send SQL statement to DBMS
-	// 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
-	// 			// Step 5: Receive results
-	// 			while (rs.next()) {
-	// 				// RoomCode RoomName Beds bedType maxOcc basePrice decor
-	// 				String RoomName = rs.getString("RoomName");
-	// 				String PopularityScore = rs.getString("Popularity_Score");
-	// 				String NextAvailableDate = rs.getInt("Next_Available_Date");
-	// 				String MostRecentCompletedStay = rs.getString("MostRecentCompletedStay");
 
-	// 				System.out.print(RoomName);
-	// 				System.out.print("\t");
-	// 				System.out.print(PopularityScore);
-	// 				System.out.print("\t");
-	// 				System.out.print(NextAvailableDate);
-	// 				System.out.print("\t");
-	// 				System.out.print(MostRecentCompletedStay);
-	// 				System.out.println();
-	// 			}
-	// 		}
-
-	// 		// Step 6: (omitted in this example) Commit or rollback transaction
-	// 	}
-	// 	// Step 7: Close connection (handled by try-with-resources syntax)
-	// }
-
-	// public void printEnv() {
-	// 	System.out.println(System.getenv("HP_JDBC_URL"));
-	// 	System.out.println(System.getenv("HP_JDBC_USER"));
-	// 	System.out.println(System.getenv("HP_JDBC_PW"));
-	// }
-	
-
-	// TODO: JOE
+		// TODO: JOE
 	public static void FR2() {
 		// Hashmap to store user input
 		HashMap<String, String> userInput = new HashMap<String, String>();
