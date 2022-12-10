@@ -271,7 +271,8 @@ public class InnReservations {
 				System.out.println("Number of kids: " + userInput.get("Kids"));
 				
 				//find rate
-				PreparedStatement numWeekendsStatement = conn.prepareStatement("SELECT ( Floor(DATEDIFF(? , ? )/7) * 2)+(CASE WHEN DAYOFWEEK( ? ) = '1' THEN 1 ELSE 0 END)+(CASE WHEN DAYOFWEEK( ? )   = '7' THEN 1 ELSE 0 END) as wknds, DATEDIFF(?,?) as dys");
+				// PreparedStatement numWeekendsStatement = conn.prepareStatement("SELECT ( Floor(DATEDIFF(? , ? )/7) * 2)+(CASE WHEN DAYOFWEEK( ? ) = '1' THEN 1 ELSE 0 END)+(CASE WHEN DAYOFWEEK( ? )   = '7' THEN 1 ELSE 0 END) as wknds, DATEDIFF( ? , ? ) as dys");
+				PreparedStatement numWeekendsStatement = conn.prepareStatement("SELECT ( Floor(DATEDIFF(? , ? )/7) * 2)+(CASE WHEN DAYOFWEEK( ? ) = '1' THEN 1 ELSE 0 END)+(CASE WHEN DAYOFWEEK( ? )   = '7' THEN 1 ELSE 0 END) as wknds, DATEDIFF( ? , ? ) as dys");
 				if(similarDateFlag) {
 					numWeekendsStatement.setString(1, reservations.get(option).get("CheckOut"));
 					numWeekendsStatement.setString(2, reservations.get(option).get("CheckIn"));
@@ -289,11 +290,15 @@ public class InnReservations {
 				}
 				
 				ResultSet numWeekendsRS = numWeekendsStatement.executeQuery();
-				rs.next();
-				int numWeekends = numWeekendsRS.getInt("wknds");
-				int numDays = numWeekendsRS.getInt("dys");
+				if (rs.next()){
+					int numWeekends = numWeekendsRS.getInt("wknds");
+					int numDays = numWeekendsRS.getInt("dys");
+					System.out.println(numWeekends + " " + numDays);
+				}
+				// int numWeekends = numWeekendsRS.getInt("wknds");
+				// int numDays = numWeekendsRS.getInt("dys");
 				
-				System.out.println(numWeekends + " " + numDays);
+				// System.out.println(numWeekends + " " + numDays);
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
