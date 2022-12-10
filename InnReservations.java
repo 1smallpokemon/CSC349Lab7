@@ -135,8 +135,15 @@ public class InnReservations {
 			userInput.put(fields[i], newField);
 
 		}
-
-		if (Integer.parseInt(userInput.get("Adults")) + Integer.parseInt(userInput.get("Kids")) > maxOccOfInn()) {
+		int adults=0;
+		int kids=0;
+		try {
+			adults = Integer.parseInt(userInput.get("Adults"));
+			kids = Integer.parseInt(userInput.get("Kids"));
+		}
+		catch (NumberFormatException e) {
+		}
+		if (adults + kids > maxOccOfInn()) {
 			System.out.println(
 					"No suitable rooms are available, exceeds max occupancy of inn. To reserve block of rooms submit multiple requests");
 			return;
@@ -267,8 +274,8 @@ public class InnReservations {
 							+ userInput.get("Checkout"));
 				}
 
-				System.out.println("Number of adults: " + userInput.get("Adults"));
-				System.out.println("Number of kids: " + userInput.get("Kids"));
+				// System.out.println("Number of adults: " + userInput.get("Adults"));
+				// System.out.println("Number of kids: " + userInput.get("Kids"));
 				
 				//find rate
 				// PreparedStatement numWeekendsStatement = conn.prepareStatement("SELECT ( Floor(DATEDIFF(? , ? )/7) * 2)+(CASE WHEN DAYOFWEEK( ? ) = '1' THEN 1 ELSE 0 END)+(CASE WHEN DAYOFWEEK( ? )   = '7' THEN 1 ELSE 0 END) as wknds, DATEDIFF( ? , ? ) as dys");
