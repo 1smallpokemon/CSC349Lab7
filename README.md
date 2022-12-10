@@ -30,3 +30,14 @@
 Example where mysql_connnector in same directory level as InnReservations.java:
 
 ```java -cp mysql-connector-java-8.0.16.jar:. InnReservations```
+
+# Work Division
+## See worklog.txt for further information
+- NFR3: DBMS Access. (Ishan Meher)
+- Command Line Main Menu (Alex Hatch)
+- FR1 Haris Khan
+- FR2 Joseph Dewar
+- FR3 Ishan Meher
+- FR4 Alex Hatch
+- FR5 Alex Hatch
+- FR6 Ishan Meher
