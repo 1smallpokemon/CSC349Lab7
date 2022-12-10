@@ -89,35 +89,47 @@ public class InnReservations {
 	 * (completed) stay in the room.
 	 */
 	// TODO: HARIS KHAN
-	public static void FR1() {
-		String query="WITH totalCheckInDays as (SELECT RoomName,SUM(CASE WHEN DATEDIFF(Checkout, CURDATE()-INTERVAL 180 day) < DATEDIFF(Checkout,Checkin) THEN DATEDIFF(Checkout, CURDATE()-INTERVAL 180 day) WHEN DATEDIFF(CheckOut,Checkin) > 180 then '180' ELSE DATEDIFF(CheckOut,Checkin) END) AS Total FROM lab7_rooms JOIN lab7_reservations ON lab7_reservations.Room = lab7_rooms.RoomCode GROUP BY RoomName),nextAvailableCheck AS (SELECT MAX(CheckOut) as lastCheckOut, RoomName FROM lab7_rooms JOIN lab7_reservations ON lab7_reservations.Room = lab7_rooms.RoomCode group by RoomName),mostRecentLength AS (SELECT RoomName, DATEDIFF(checkout, checkin) as totalStay FROM nextAvailableCheck, lab7_reservations WHERE lab7_reservations.Checkout = lastCheckOut) SELECT DISTINCT totalCheckInDays.RoomName AS RoomName, Round(Total/180, 2) as Popularity_Score, lastCheckOut as Next_Available_Date, totalStay as Most_Recent_Completed_Stay FROM totalCheckInDays,nextAvailableCheck, mostRecentLength WHERE totalCheckInDays.RoomName = nextAvailableCheck.RoomName AND nextAvailableCheck.RoomName = mostRecentLength.RoomName";
-		try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"), System.getenv("HP_JDBC_USER"),
-				System.getenv("HP_JDBC_PW"))) {
-			try (PreparedStatement preparedStatement = conn
-					.prepareStatement(query)) {
-				ResultSet rs = preparedStatement.executeQuery();
-				String [] fields={
-						"RoomName",
-						"Popularity_Score",
-						"Next_Available_Date",
-						"Most_Recent_Completed_Stay"
-				};
-				while (rs.next()) {
-					for(int i=0;i<fields.length;i++){
-						System.out.println(fields[i]+": "+rs.getString(fields[i]));
-					}
-					System.out.println("=================================");
-				}
+	public static void FR1() {}
 
-			} catch (SQLException e) {
-				e.printStackTrace();
-				conn.rollback();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	// 	// Step 1: Establish  connection to RDBMS
+	// 	try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"), System.getenv("HP_JDBC_USER"),
+	// 			System.getenv("HP_JDBC_PW"))) {
+	// 		// Step 2: Construct SQL statement
+	// 		String sql = "WITH totalCheckInDays as (SELECT RoomName, SUM(CASE WHEN DATEDIFF(CURDATE(), Checkout) > 180 THEN '0' WHEN DATEDIFF(Checkout, CURDATE()-INTERVAL 180 day) < DATEDIFF(Checkout,Checkin) THEN DATEDIFF(Checkout, CURDATE()-INTERVAL 180 day) WHEN DATEDIFF(CheckOut,Checkin) > 180 then '180' ELSE DATEDIFF(CheckOut,Checkin) END) AS Total FROM imeher.lab7_rooms JOIN imeher.lab7_reservations ON imeher.lab7_reservations.Room = imeher.lab7_rooms.RoomCode GROUP BY RoomName), nextAvailableCheck AS (SELECT MAX(CheckOut) as lastCheckOut, RoomName FROM imeher.lab7_rooms JOIN imeher.lab7_reservations ON imeher.lab7_reservations.Room = imeher.lab7_rooms.RoomCode group by RoomName), mostRecentLength AS (SELECT RoomName, DATEDIFF(checkout, checkin) as totalStay FROM nextAvailableCheck, imeher.lab7_reservations WHERE imeher.lab7_reservations.Checkout = lastCheckOut) SELECT DISTINCT totalCheckInDays.RoomName AS RoomName, Round(Total/180, 2) as Popularity_Score, lastCheckOut as Next_Available_Date, totalStay as Most_Recent_Completed_Stay FROM totalCheckInDays, nextAvailableCheck,  mostRecentLength WHERE totalCheckInDays.RoomName = nextAvailableCheck.RoomName AND nextAvailableCheck.RoomName = mostRecentLength.RoomName";
 
+	// 		// Step 4: Send SQL statement to DBMS
+	// 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+	// 			// Step 5: Receive results
+	// 			while (rs.next()) {
+	// 				// RoomCode RoomName Beds bedType maxOcc basePrice decor
+	// 				String RoomName = rs.getString("RoomName");
+	// 				String PopularityScore = rs.getString("Popularity_Score");
+	// 				String NextAvailableDate = rs.getInt("Next_Available_Date");
+	// 				String MostRecentCompletedStay = rs.getString("MostRecentCompletedStay");
+
+	// 				System.out.print(RoomName);
+	// 				System.out.print("\t");
+	// 				System.out.print(PopularityScore);
+	// 				System.out.print("\t");
+	// 				System.out.print(NextAvailableDate);
+	// 				System.out.print("\t");
+	// 				System.out.print(MostRecentCompletedStay);
+	// 				System.out.println();
+	// 			}
+	// 		}
+
+	// 		// Step 6: (omitted in this example) Commit or rollback transaction
+	// 	}
+	// 	// Step 7: Close connection (handled by try-with-resources syntax)
+	// }
+
+	// public void printEnv() {
+	// 	System.out.println(System.getenv("HP_JDBC_URL"));
+	// 	System.out.println(System.getenv("HP_JDBC_USER"));
+	// 	System.out.println(System.getenv("HP_JDBC_PW"));
+	// }
+	
 
 	// TODO: JOE
 	public static void FR2() {
@@ -146,7 +158,7 @@ public class InnReservations {
 				System.getenv("HP_JDBC_PW"))) {
 
 			// Create the query
-			String query = "SELECT * FROM lab7_rooms WHERE RoomCode NOT IN (SELECT DISTINCT Room FROM lab7_reservations WHERE (Checkin BETWEEN ? AND ?) OR DATE_SUB(Checkout,INTERVAL 1 DAY) BETWEEN ? AND ? OR (Checkin <= ? AND Checkout > ?))";
+			String query = "SELECT DISTINCT lab7_rooms.* FROM lab7_rooms JOIN lab7_reservations ON RoomCode=Room WHERE RoomCode NOT IN (SELECT DISTINCT Room FROM lab7_reservations WHERE (Checkin <= ? AND Checkout > ?) OR (Checkin >= ? AND Checkout< ?) OR (Checkin <= ? AND Checkout >= ?))";
 			int numVars = 6;
 
 			// Append to the query if the user specified a value for a field
@@ -211,22 +223,41 @@ public class InnReservations {
 					reservation.put("decor", rs.getString("decor"));
 					reservations.add(reservation);
 
-					System.out.println("Room Code: " + rs.getString("RoomCode"));
-					System.out.println("Room Name: " + rs.getString("RoomName"));
-					System.out.println("Beds: " + rs.getString("Beds"));
-					System.out.println("Bed Type: " + rs.getString("bedType"));
-					System.out.println("Maximum Occupancy: " + rs.getString("maxOcc"));
-					System.out.println("Base Price: " + rs.getString("basePrice"));
+					System.out.print("Option " + reservations.size() + ": | ");
+					System.out.print("Room Code: " + rs.getString("RoomCode") + " | ");
+					System.out.print("Room Name: " + rs.getString("RoomName") + " | ");
+					System.out.print("Beds: " + rs.getString("Beds") + " | ");
+					System.out.print("Bed Type: " + rs.getString("bedType") + " | ");
+					System.out.print("Maximum Occupancy: " + rs.getString("maxOcc") + " | ");
+					System.out.print("Base Price: " + rs.getString("basePrice") + " | ");
 					System.out.println("Decor: " + rs.getString("decor"));
 				}
 				// If the query returns no results return other results
 				if (reservations.size() == 0) {
-					// querySimilarDateRange(userInput, reservations);
+					System.out.print("No exact matches found...");
+					querySimilarDateRange(userInput, reservations);
+					
+					System.out.println("No exact matches found...");
+					System.out.println("Similar matches below:");
+					for(int i=0; i< 5; i++) {
+						System.out.print("Option " + i + ": | ");
+						System.out.print("Room Code: " + reservations.get(i).get("RoomCode") + " | ");
+						System.out.print("Room Name: " + reservations.get(i).get("RoomName") + " | ");
+						System.out.print("Beds: " + reservations.get(i).get("Beds") + " | ");
+						System.out.print("Bed Type: " + reservations.get(i).get("bedType") + " | ");
+						System.out.print("Maximum Occupancy: " + reservations.get(i).get("maxOcc") + " | ");
+						System.out.print("Base Price: " + reservations.get(i).get("basePrice") + " | ");
+						System.out.print("Decor: " + reservations.get(i).get("decor") + " | ");
+						System.out.println("Adjusted CheckIn/ CheckOut dates: " + reservations.get(i).get("CheckIn")
+								+ " to " + reservations.get(i).get("CheckOut"));
+					}
 				}
+				
+				
 
 			} catch (SQLException e) {
 				e.printStackTrace();
-				// conn.rollback();
+				conn.rollback();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -237,7 +268,7 @@ public class InnReservations {
 	private static int maxOccOfInn() {
 		try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"), System.getenv("HP_JDBC_USER"),
 				System.getenv("HP_JDBC_PW"))) {
-			String sql = "Select max(maxOcc) as mx From imeher.lab7_rooms";
+			String sql = "Select max(maxOcc) as mx From lab7_rooms";
 
 			try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 				rs.next();
@@ -253,20 +284,24 @@ public class InnReservations {
 
 	public static void querySimilarDateRange(HashMap<String, String> userInput,
 			ArrayList<HashMap<String, String>> reservations) {
-		int count = 0;
-		String query = "SELECT lab7_rooms.* FROM lab7_rooms WHERE RoomCode NOT IN (SELECT DISTINCT Room FROM lab7_reservations WHERE (Checkin BETWEEN ? AND ?) OR DATE_SUB(Checkout,INTERVAL 1 DAY) BETWEEN ? AND ? OR (Checkin <= ? AND Checkout > ?)";
+		int count = 1;
+		String query = "SELECT DISTINCT lab7_rooms.* FROM lab7_rooms JOIN lab7_reservations ON RoomCode=Room WHERE RoomCode NOT IN (SELECT DISTINCT Room FROM lab7_reservations WHERE (Checkin <= ? AND Checkout > ?) OR (Checkin >= ? AND Checkout< ?) OR (Checkin <= ? AND Checkout >= ?)) AND maxOcc = ? + ?";
 		while (reservations.size() <= 5) {
 			try (Connection conn = DriverManager.getConnection(System.getenv("HP_JDBC_URL"),
 					System.getenv("HP_JDBC_USER"), System.getenv("HP_JDBC_PW"))) {
 				try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
-					String checkin = "DATE_ADD(" + userInput.get("CheckIn") + "," + count + ")";
-					String checkout = "DATE_ADD(" + userInput.get("CheckOut") + "," + count + ")";
+					String checkin = "DATE_ADD('" + userInput.get("CheckIn") + "', INTERVAL " + count + " DAY)";
+					String checkout = "DATE_ADD('" + userInput.get("Checkout") + "', INTERVAL " + count + " DAY)";
+					System.out.println(checkin);
+					System.out.println(checkout);
 					preparedStatement.setString(1, checkin);
 					preparedStatement.setString(2, checkout);
 					preparedStatement.setString(3, checkin);
 					preparedStatement.setString(4, checkout);
 					preparedStatement.setString(5, checkin);
 					preparedStatement.setString(6, checkout);
+					preparedStatement.setString(7,userInput.get("Kids"));
+					preparedStatement.setString(8,userInput.get("Adults"));
 					ResultSet rs = preparedStatement.executeQuery();
 					while (rs.next()) {
 						// store reservation information in hashmap
@@ -278,9 +313,19 @@ public class InnReservations {
 						reservation.put("maxOcc", rs.getString("maxOcc"));
 						reservation.put("basePrice", rs.getString("basePrice"));
 						reservation.put("decor", rs.getString("decor"));
+						
+						ResultSet adjustedCheckInRS = conn.createStatement().executeQuery("Select "+checkin + " as DY");
+						adjustedCheckInRS.next();
+						System.out.println(adjustedCheckInRS.getDate("DY").toString());
+						reservation.put("CheckIn",adjustedCheckInRS.getDate("DY").toString());
+						
+						ResultSet adjustedCheckOutRS = conn.createStatement().executeQuery("Select "+checkout + " as DY");
+						adjustedCheckOutRS.next();
+						reservation.put("CheckOut" ,adjustedCheckOutRS.getDate("DY").toString());
+								
 						reservations.add(reservation);
-						count++;
 					}
+					count++;
 				} catch (SQLException e) {
 					e.printStackTrace();
 					conn.rollback();
