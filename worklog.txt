@@ -1,0 +1,432 @@
+commit febd88d2d5a433da8a0ddc406bec27244eb0091c
+Author: HarisKhan0 <71156152+HarisKhan0@users.noreply.github.com>
+Date:   Fri Dec 9 22:02:15 2022 -0800
+
+    FR1 finished
+
+ InnReservations.java | 75 ++++++++++++++++++++++------------------------------
+ 1 file changed, 32 insertions(+), 43 deletions(-)
+
+commit ba15a11fdae8e54f08814aea39415fde86ea43e9
+Merge: 6045295 57db62a
+Author: HarisKhan0 <71156152+HarisKhan0@users.noreply.github.com>
+Date:   Fri Dec 9 22:01:18 2022 -0800
+
+    Merge remote-tracking branch 'origin/main'
+    
+    # Conflicts:
+    #       InnReservations.java
+
+commit 6045295b345d32210356921ad3fc7969b0be8d99
+Author: HarisKhan0 <71156152+HarisKhan0@users.noreply.github.com>
+Date:   Fri Dec 9 22:01:00 2022 -0800
+
+    FR1 finished
+
+ InnReservations.java | 52 ++++++++++++++++++++--------------------------------
+ 1 file changed, 20 insertions(+), 32 deletions(-)
+
+commit 57db62af1e69f918d8377fc0ba33fa378d92887c
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Fri Dec 9 20:34:43 2022 -0800
+
+    Fixed typpo
+
+ InnReservations.class | Bin 12227 -> 17553 bytes
+ InnReservations.java  |  89 ++++++++++++++++++++++++++------------------------
+ 2 files changed, 46 insertions(+), 43 deletions(-)
+
+commit f5cec3b5f0388943892b324e9795281c6babaa10
+Merge: 61ac915 d6e36c5
+Author: 1smallpokemon <superjoeyd123@gmail.com>
+Date:   Sat Dec 10 04:17:47 2022 +0000
+
+    Merge branch 'main' of https://github.com/CSC365Lab7/CSC365Lab7
+
+commit 61ac915eec420cd9aecf36223c756b78285c1568
+Author: 1smallpokemon <superjoeyd123@gmail.com>
+Date:   Sat Dec 10 04:17:05 2022 +0000
+
+    not working commit fr2
+
+ InnReservations.java | 58 +++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 44 insertions(+), 14 deletions(-)
+
+commit d6e36c5d69027db2350b98ca54c64865370ed5ef
+Author: HarisKhan0 <71156152+HarisKhan0@users.noreply.github.com>
+Date:   Fri Dec 9 16:51:28 2022 -0800
+
+    FR1 proto
+
+ InnReservations.java | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+commit 03583c7546038d4aaaa3c17bfe74b8f930e40d82
+Author: Ishan Meher <64764518+ShanMehr@users.noreply.github.com>
+Date:   Fri Dec 9 15:35:51 2022 -0800
+
+    Update README.md
+
+ README.md | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+commit 2d971b58e1e105dcb835fee4bd0695cea8297956
+Merge: 4c428ea 8a78cf1
+Author: 1smallpokemon <superjoeyd123@gmail.com>
+Date:   Fri Dec 9 22:50:40 2022 +0000
+
+    Merge branch 'main' of https://github.com/CSC365Lab7/CSC365Lab7
+
+commit 4c428ea7df30eb26b0f0bab9845350213fc16b39
+Author: 1smallpokemon <superjoeyd123@gmail.com>
+Date:   Fri Dec 9 22:48:42 2022 +0000
+
+    working commit for fr2() search w/o similar date range working
+
+ InnReservations.java | 1254 ++++++++++++++++++++++++++++----------------------
+ 1 file changed, 692 insertions(+), 562 deletions(-)
+
+commit 8a78cf12b5928e0bfed6a4f1f8f959662165cc63
+Author: Ishan Meher <64764518+ShanMehr@users.noreply.github.com>
+Date:   Fri Dec 9 00:34:41 2022 -0800
+
+    Update README.md
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6a646496ffa851fbe4ae582299edc9cfdfe0aab7
+Author: Ishan Meher <64764518+ShanMehr@users.noreply.github.com>
+Date:   Fri Dec 9 00:34:04 2022 -0800
+
+    Update README.md
+
+ README.md | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
+
+commit 3ad6c41dd1513c9b36d5f60f356cf1b844de131d
+Merge: 3b305fc d40af33
+Author: Ishan Meher <64764518+ShanMehr@users.noreply.github.com>
+Date:   Wed Dec 7 17:25:28 2022 -0800
+
+    Merge pull request #3 from CSC365Lab7/Ishan_Fr6
+    
+    Ishan fr6
+
+commit d40af339efd02a62927900083089c7c78e026f90
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Wed Dec 7 17:24:45 2022 -0800
+
+    Formatted Code
+
+ InnReservations.class | Bin 12286 -> 12227 bytes
+ InnReservations.java  |   8 ++++----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 169ddc497f1cd5e1c285065a90f574a8a7542b76
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Wed Dec 7 17:20:25 2022 -0800
+
+    Finished ishan_fr_6:
+
+ InnReservations.class | Bin 10544 -> 12286 bytes
+ InnReservations.java  |  53 ++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 51 insertions(+), 2 deletions(-)
+
+commit 99dee8df5066f9f4569604589c869a1c357996f1
+Merge: 5df1c80 3b305fc
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Wed Dec 7 16:18:19 2022 -0800
+
+    Merge branch 'main' of github.com:CSC365Lab7/CSC365Lab7 into Ishan_Fr6
+    Good Question
+
+commit 3b305fc7c70d62e6492b5a134d5d111c30a9de6e
+Merge: 3eefbfd 7b4d583
+Author: Ishan Meher <64764518+ShanMehr@users.noreply.github.com>
+Date:   Wed Dec 7 16:11:06 2022 -0800
+
+    Merge pull request #2 from CSC365Lab7/Ishan_Fr3
+    
+    Ishan fr3
+
+commit 7b4d5838712754338027ce79a71bfd31beb2af02
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Wed Dec 7 16:10:19 2022 -0800
+
+    Made sure checkin and checkout dates dont conflict on update
+
+ InnReservations.class | Bin 10484 -> 10544 bytes
+ InnReservations.java  |   5 ++++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+commit 4e7cfb21ef4e1eeb88f7ef8f2b774705a2db8233
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Wed Dec 7 16:05:24 2022 -0800
+
+    Users are now able to update entries
+
+ InnReservations.class | Bin 9521 -> 10484 bytes
+ InnReservations.java  |  38 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
+
+commit 5df1c80f6612777f587b0be1011015800a2bfd27
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Fri Dec 2 03:29:15 2022 -0800
+
+    Added Comments
+
+ InnReservations.java | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 4ae0a5982d213d82dbf6017e2da45c594a0a8b33
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Fri Dec 2 03:28:05 2022 -0800
+
+    Planned SQL query for FR6
+
+ InnReservations.java | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+commit 4aadb4d42dec60788bda40d4e71eaae5d6125850
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Fri Dec 2 01:34:02 2022 -0800
+
+    printed edit menu
+
+ InnReservations.class | Bin 9337 -> 9521 bytes
+ InnReservations.java  |  79 ++++++++++++++++++++++++++++++++------------------
+ 2 files changed, 50 insertions(+), 29 deletions(-)
+
+commit 2dcb65d0c3aa5bd899bada5dfac3a20826c84620
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Fri Dec 2 00:48:20 2022 -0800
+
+    Added Validation prior to ensure valid reservation
+
+ InnReservations.class | Bin 8177 -> 9337 bytes
+ InnReservations.java  |  49 +++++++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 45 insertions(+), 4 deletions(-)
+
+commit 3eefbfdbab5f8b2dc9c6796897d8d44138dbde34
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Fri Dec 2 00:22:04 2022 -0800
+
+    Confirmed code compiles
+
+ InnReservations.class | Bin 8091 -> 8177 bytes
+ InnReservations.java  |   4 ++--
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit f7ec8c8d8ab61206870eb359813fc2e77bbbd88e
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Fri Dec 2 00:20:48 2022 -0800
+
+    Created Menu for FR3
+
+ InnReservations.class | Bin 7625 -> 8091 bytes
+ InnReservations.java  |  51 ++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 49 insertions(+), 2 deletions(-)
+
+commit 65f400ae2c1718386c4b32d78315f3f83e74a0f1
+Author: alexhatch <alexhatchh@gmail.com>
+Date:   Thu Dec 1 16:48:49 2022 -0800
+
+    Completed FR5 and enhanced main menu
+
+ InnReservations.class | Bin 6516 -> 7625 bytes
+ InnReservations.java  |  67 ++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 40 insertions(+), 27 deletions(-)
+
+commit b037962c660f772c0fba0cccb17886a25461107e
+Author: BuildTools <unconfigured@null.spigotmc.org>
+Date:   Thu Dec 1 16:31:29 2022 -0800
+
+    FR5
+
+ InnReservations.java | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
+
+commit 14c9f8f6758df6e0865667daa15dd5cab5ad67cc
+Author: alexhatch <alexhatchh@gmail.com>
+Date:   Thu Dec 1 16:25:11 2022 -0800
+
+    FR5
+
+ InnReservations.class | Bin 5951 -> 6516 bytes
+ InnReservations.java  |  89 +++++++++++++++++++++++++++++++++-----------------
+ 2 files changed, 59 insertions(+), 30 deletions(-)
+
+commit 13c92a5a986b8a8cce7497939900c675e2b81b1d
+Author: BuildTools <unconfigured@null.spigotmc.org>
+Date:   Thu Dec 1 14:09:07 2022 -0800
+
+    part of FR5 and main menu switch statements
+
+ InnReservations.class | Bin 5178 -> 5951 bytes
+ InnReservations.java  | 257 ++++++++++++++++++++++++++++----------------------
+ 2 files changed, 143 insertions(+), 114 deletions(-)
+
+commit 17f261dca00698238a1e4652aaa2743b1c58c943
+Author: alexhatch <alexhatchh@gmail.com>
+Date:   Wed Nov 30 21:04:58 2022 -0800
+
+    FR4
+
+ InnReservations.class | Bin 4315 -> 5178 bytes
+ InnReservations.java  |  91 ++++++++++++++++++++++++++++----------------------
+ 2 files changed, 52 insertions(+), 39 deletions(-)
+
+commit 89b4b4961fdcca4c0b6fc2f95cf5e76b2aa3eb65
+Author: alexhatch <alexhatchh@gmail.com>
+Date:   Wed Nov 30 20:17:16 2022 -0800
+
+    Added "main menu" and passed connection object to each function requirement method
+
+ InnReservations.class | Bin 3117 -> 4315 bytes
+ InnReservations.java  |  63 +++++++++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 57 insertions(+), 6 deletions(-)
+
+commit 122ae1c254fd450dfd2b4fb7c8b6948173d00fb5
+Author: HarisKhan0 <71156152+HarisKhan0@users.noreply.github.com>
+Date:   Wed Nov 30 13:46:55 2022 -0800
+
+    ver3
+
+ InnReservations.class | Bin 2847 -> 3117 bytes
+ InnReservations.java  |   2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+commit 1059effa22c8f519d5ac9b40293472bb1ac9c935
+Author: alexhatch <alexhatchh@gmail.com>
+Date:   Wed Nov 30 13:45:47 2022 -0800
+
+    Added the functional requirements descriptions and skeleton format.
+
+ InnReservations.java | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit eacfc40c1ac59220f0c4f34e1301abf12aee7311
+Author: 1smallpokemon <superjoeyd123@gmail.com>
+Date:   Wed Nov 30 21:37:49 2022 +0000
+
+    todo
+
+ InnReservations.java | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit b78c0bcbe2ed3db7f01cbb30f888428359835fca
+Merge: b7cf459 e5ee923
+Author: 1smallpokemon <superjoeyd123@gmail.com>
+Date:   Wed Nov 30 21:23:40 2022 +0000
+
+    Merge branch 'main' of https://github.com/CSC365Lab7/CSC365Lab7
+
+commit b7cf4597c946998f9302625ef9944e57c99262e1
+Author: 1smallpokemon <superjoeyd123@gmail.com>
+Date:   Wed Nov 30 21:22:30 2022 +0000
+
+    alex stop using unicode characters >:(
+
+ InnReservations.java | 72 ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
+
+commit e5ee9237d21e66997173cf66f8a0e85286920351
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Wed Nov 30 13:08:13 2022 -0800
+
+    Added comment about how to run file
+
+ InnReservations.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 17f5889e3ae56f46b7a1d90529b7e8d974aee4fa
+Author: alexhatch <alexhatchh@gmail.com>
+Date:   Tue Nov 29 18:07:16 2022 -0800
+
+    Added the functional requirements descriptions and skeleton format.
+
+ InnReservations.java | 237 +++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 173 insertions(+), 64 deletions(-)
+
+commit 9550ab720f8fe4fcd7a790684ce206aae2b0b631
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Tue Nov 29 00:36:16 2022 -0800
+
+    Form Connection to Database
+
+ InnReservations.class | Bin 0 -> 2847 bytes
+ InnReservations.java  | 105 +++++++++++++++++++++++++++++++++++++-------------
+ 2 files changed, 78 insertions(+), 27 deletions(-)
+
+commit 7884beacbdb9b36aaa0f17f970922feca40e2ee0
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Mon Nov 28 23:58:15 2022 -0800
+
+    added jar file
+
+ .gitignore | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit fce750ae84ecc4ef77272a62fa7fe71217f9925a
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Mon Nov 28 23:53:15 2022 -0800
+
+    Added auth.jdbc.TEMPLATE to gitignore for now
+
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit f1971b66c14d7757ebe213b40c644cff17ea372c
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Mon Nov 28 23:50:26 2022 -0800
+
+    added innreservations back
+
+ InnReservations.java | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+
+commit c5667fb15d00a9cbc8fb7a33b3ee85985675585a
+Author: ShanMehr <ishanmeher25@gmail.com>
+Date:   Mon Nov 28 23:43:25 2022 -0800
+
+    Changed filename to InnReservations as required
+
+ HastyPastry.java | 45 ---------------------------------------------
+ 1 file changed, 45 deletions(-)
+
+commit 081984772bf962c8f899a49ff62974173254254a
+Author: HarisKhan0 <71156152+HarisKhan0@users.noreply.github.com>
+Date:   Mon Nov 28 13:56:05 2022 -0800
+
+    ver2
+
+ HastyPastry.java | 34 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
+
+commit e6738f609cea0d08489dbc47b0d4bac705e99b95
+Author: HarisKhan0 <71156152+HarisKhan0@users.noreply.github.com>
+Date:   Mon Nov 28 13:37:57 2022 -0800
+
+    Ver1
+
+ HastyPastry.java | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+commit 40499ae6176d5f43aa90aed8dce7b1dcac591e4b
+Author: 1smallpokemon <49707019+1smallpokemon@users.noreply.github.com>
+Date:   Mon Nov 28 13:23:42 2022 -0800
+
+    Update README.md
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 002c7f38e90f109ba3ca4b67884857a490976e18
+Author: 1smallpokemon <superjoeyd123@gmail.com>
+Date:   Mon Nov 28 21:05:16 2022 +0000
+
+    first commit
+
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
